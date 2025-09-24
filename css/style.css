@@ -1,0 +1,506 @@
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+       
+        body {
+    font-family: 'Microsoft JhengHei', Arial, sans-serif;
+    background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+    color: #ecf0f1;
+    height: 100vh;        /* 改成固定高度，不用 min-height */
+    padding: 0;
+    margin: 0;            /* 加這行 */
+    overflow: hidden;     /* 改成 hidden，防止整頁滾動 */
+    position: fixed;      /* 加這行 */
+    width: 100%;         /* 加這行 */
+    top: 0;              /* 加這行 */
+    left: 0;             /* 加這行 */
+}
+
+.container {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    background: white;
+    height: 100vh;       /* 改成固定高度 */
+    position: relative;
+    overflow: hidden;    /* 改成 hidden */
+    display: flex;       /* 加這行 */
+    flex-direction: column; /* 加這行 */
+}
+       
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+       
+        .header h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+       
+        .header p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+       
+        .main-content {
+    background: white;
+    color: #2c3e50;
+    padding: 20px;
+    flex: 1;             /* 加這行，填滿剩餘空間 */
+    overflow-y: auto;    /* 加這行，只讓內容滾動 */
+    overflow-x: hidden;  /* 保留這行 */
+    -webkit-overflow-scrolling: touch; /* iOS 流暢滾動 */
+}
+       
+        .search-methods {
+            margin-bottom: 30px;
+        }
+       
+        .method-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            text-align: center;
+        }
+       
+        .method-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+       
+        .method-btn {
+            padding: 25px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            min-height: 80px;
+        }
+       
+        /* 主要功能 - 藍色 */
+        .btn-step {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+       
+        /* 語音功能 - 綠色 */
+        .btn-voice {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+        }
+       
+        /* 操作手冊 - 灰色（與其他模組一致）*/
+        .btn-manual {
+            background: linear-gradient(135deg, #95A5A6, #7F8C8D);
+            color: white;
+        }
+
+        .btn-manual:hover {
+             transform: translateY(-2px);
+             box-shadow: 0 6px 12px rgba(149, 165, 166, 0.4);
+        }
+       
+        .method-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+       
+        .method-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+       
+        .step-container {
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+       
+        .step-container.active {
+            display: block;
+        }
+       
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+       
+        .step-header {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 2px solid #dee2e6;
+        }
+       
+        .step-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+       
+        .step-info {
+            font-size: 12px;
+            color: #6c757d;
+        }
+       
+        .back-btn {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+       
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+       
+        .option-btn {
+            padding: 16px 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            background: white;
+            color: #2c3e50;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 加入這一行 */
+           .option-btn:active {
+            transform: scale(0.95);
+            }
+       
+        .option-btn:hover {
+            border-color: #3498db;
+            background: #e8f4fd;
+        }
+       
+        .option-btn.selected {
+            border-color: #ffffff !important;
+            border-width: 4px !important;
+            box-shadow: 0 0 0 2px #3498db, 0 4px 12px rgba(52, 152, 219, 0.4) !important;
+            transform: scale(1.05);
+        }
+       
+        .brand-select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            background: white;
+        }
+       
+        .category-groups {
+            margin-bottom: 20px;
+        }
+       
+        .category-group {
+            margin-bottom: 20px;
+        }
+       
+        .group-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+       
+        .next-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            display: none;  /* 新增這一行 */
+        }
+       
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+        }
+       
+        .next-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+       
+        .voice-interface {
+            text-align: center;
+            padding: 40px 20px;
+        }
+       
+        .voice-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            font-size: 48px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(46, 204, 113, 0.3);
+        }
+       
+        .voice-btn:hover {
+            transform: scale(1.05);
+        }
+       
+        .voice-btn.recording {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            animation: pulse 1s infinite;
+        }
+       
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+       
+        .voice-text {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+       
+        .voice-result {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #3498db;
+        }
+       
+               
+        .results-container {
+            margin-top: 30px;
+            display: none;
+        }
+       
+        .results-header {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 2px solid #dee2e6;
+        }
+       
+        .result-item {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+       
+        .result-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+       
+        .result-details {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+       
+        .loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+       
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e3f2fd;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px auto;
+        }
+       
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .fixed-next-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;  /* 加這行，預設隱藏 */
+    padding: 15px 20px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 999;
+    opacity: 0.5;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.fixed-next-btn.enabled {
+    background: linear-gradient(135deg, #17a2b8, #138496);
+    opacity: 1;
+    pointer-events: all;
+}
+
+.fixed-next-btn.enabled:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(23, 162, 184, 0.4);
+}
+
+/* 合併商品顯示樣式 */
+.merged-result-item {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-left: 4px solid #3498db;
+}
+
+.result-header {
+    margin-bottom: 12px;
+}
+
+.result-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 4px;
+}
+
+.result-meta {
+    font-size: 12px;
+    color: #7f8c8d;
+}
+
+.result-details {
+    margin-bottom: 12px;
+}
+
+.result-details > div {
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.sale-history {
+    background: #f8f9fa;
+    padding: 8px;
+    border-radius: 4px;
+    margin: 8px 0;
+}
+
+.sale-record {
+    display: inline-block;
+    background: #e3f2fd;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-right: 8px;
+    font-size: 12px;
+}
+
+.relevance-score {
+    color: #27ae60;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.product-image {
+    text-align: center;
+    margin-top: 8px;
+}
+
+.sale-history-title {
+    margin-bottom: 5px;
+}
+
+.sale-record-line {
+    background: #e3f2fd;
+    padding: 4px 8px;
+    border-radius: 3px;
+    margin-bottom: 3px;
+    font-size: 12px;
+}
+
+.sale-record-line:last-child {
+    margin-bottom: 0;
+}
+
+.selection-summary {
+    background: #e8f4fd;
+    padding: 12px 15px;
+    margin: 15px -20px;
+    border-left: 4px solid #3498db;
+    font-size: 14px;
+    color: #2c3e50;
+}
+
+.selection-summary strong {
+    color: #2c3e50;
+    margin-right: 8px;
+}
+
+.summary-content {
+    color: #666;
+}
+
+
+
+
+    </style>

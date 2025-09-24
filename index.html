@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>直播商品查找系統</title>
+   <link rel="stylesheet" href="css/style.css">
+
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 直播商品查找系統</h1>
+            <p>快速查找 · 精準匹配 · 智慧搜尋</p>
+        </div>
+       
+        <div class="main-content">
+            <!-- 主選單 -->
+            <div id="mainMenu" class="search-methods">
+                <div class="method-title">選擇查找方式</div>
+                
+                <!-- 顯示當前記住的設定 -->
+                <div id="currentSettings" style="display: none; background: #e8f4fd; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #3498db;">
+                    <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">目前設定：</div>
+                    <div id="settingsDisplay" style="font-size: 13px; color: #666;">
+                        <!-- 動態顯示當前記住的品牌和性別 -->
+                    </div>
+                    <button onclick="clearLocalCache()" style="background: #95a5a6; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; margin-top: 8px;">清除所有記憶設定</button>
+                </div>
+                
+                <div class="method-buttons">
+                    <button class="method-btn btn-step" onclick="startStepSearch()">
+                        📋 逐步選擇
+                        <div style="font-size: 12px; opacity: 0.8;">品牌 → 時間範圍 → 性別 → 類別 → 特色</div>
+                    </button>
+                    <button class="method-btn btn-voice" onclick="startVoiceSearch()">
+                        🎤 語音搜尋
+                        <div style="font-size: 12px; opacity: 0.8;">說出商品特徵快速查找</div>
+                    </button>
+                    <!-- 將AI按鈕改為操作手冊按鈕 -->
+                    <button class="method-btn btn-manual" onclick="showManual()">
+                        📖 操作手冊
+                        <div style="font-size: 12px; opacity: 0.8;">查看詳細使用說明</div>
+                    </button>
+                    <button class="method-btn" onclick="clearLocalCache()" style="background: linear-gradient(135deg, #e67e22, #d35400); color: white; margin-top: 10px;">
+                        🗑️ 清除快取
+                    <div style="font-size: 12px; opacity: 0.8;">重新載入類別和特色資料</div>
+                    </button>
+                    <button class="method-btn" onclick="systemHealthCheck()" style="background: linear-gradient(135deg, #17a2b8, #138496); color: white; margin-top: 10px;">
+                        ⚕️ 系統檢查
+                       <div style="font-size: 12px; opacity: 0.8;">檢查系統狀態</div>
+                    </button>                    
+
+                </div>
+            </div>
+           
+            <!-- 逐步搜尋介面 -->
+<div id="stepSearch" class="step-container">
+    
+    <!-- 全域摘要區塊，所有步驟共用 -->
+    <div id="selectionSummary" class="selection-summary" style="display: none;">
+    <strong>目前選擇：</strong>
+    <span id="summaryContent" class="summary-content"></span>
+</div>
+    
+   
+    <!-- 步驟1：品牌選擇 -->
+<div id="step1" class="step-content active">
+    <div class="step-header">
+        <div class="step-title">步驟 1/5：選擇品牌</div>
+        <div class="step-info">選擇要查找的商品品牌</div>
+    </div>
+    
+    <button class="back-btn" onclick="backToMenu()">← 返回主選單</button>
+    
+    <!-- 新增品牌下拉選單 -->
+    <div class="form-row" style="margin:12px 0;">
+        <label for="brandSelect" style="display:block; font-size:14px; margin-bottom:6px;">品牌</label>
+        <select class="brand-select" id="brandSelect" style="width:100%; padding:8px;" onchange="selectBrand(this.value);">
+            <option value="">-- 請選擇品牌 --</option>
+        </select>
+    </div>
+    
+    <div style="margin: 15px 0;">
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+            <input type="checkbox" id="rememberBrand" checked>
+            記住品牌選擇（本次直播固定使用）
+        </label>
+    </div>
+    <button class="next-btn" onclick="nextStep(2)" disabled id="step1Next">下一步：選擇時間範圍</button>
+</div>
+               
+                <!-- 步驟2：時間範圍選擇 -->
+                <div id="step2" class="step-content">
+                    <div class="step-header">
+                        <div class="step-title">步驟 2/5：選擇時間範圍</div>
+                        <div class="step-info">選擇商品的銷售時期（決定搜尋哪些檔案）</div>
+                    </div>
+                    <button class="back-btn" onclick="prevStep(1)">← 上一步</button>
+                    <div class="options-grid">
+                        <div class="option-btn" onclick="selectOption(this, 'timeRange', 'recent')" style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; border-color: #e74c3c;">
+                            🔥 主要商品<br><small style="font-size: 10px; opacity: 0.9;">主要檔案(6個月內)+經典檔案</small>
+                        </div>
+                        <div class="option-btn" onclick="selectOption(this, 'timeRange', 'previous')" style="background: linear-gradient(135deg, #f39c12, #e67e22); color: white; border-color: #f39c12;">
+                            ⏰ 過期商品<br><small style="font-size: 10px; opacity: 0.9;">過期檔案(6-12個月)+經典檔案</small>
+                        </div>
+                        <div class="option-btn" onclick="selectOption(this, 'timeRange', 'history')" style="background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; border-color: #9b59b6;">
+                            📅 歷史商品<br><small style="font-size: 10px; opacity: 0.9;">歷史檔案(12-24個月)+經典檔案</small>
+                        </div>
+                        <div class="option-btn" onclick="selectOption(this, 'timeRange', 'classic')" style="background: linear-gradient(135deg, #f1c40f, #f39c12); color: white; border-color: #f1c40f;">
+                            ⭐ 經典商品<br><small style="font-size: 10px; opacity: 0.9;">經典檔案(每年都有的款式)</small>
+                        </div>
+                        <div class="option-btn" onclick="selectOption(this, 'timeRange', 'all')" style="background: linear-gradient(135deg, #34495e, #2c3e50); color: white; border-color: #34495e;">
+                            🔍 全部搜尋<br><small style="font-size: 10px; opacity: 0.9;">搜尋所有檔案</small>
+                        </div>
+                    </div>
+                    <div style="margin: 15px 0;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                            <input type="checkbox" id="rememberTimeRange">
+                            記住時間範圍選擇（加入快速選項）
+                        </label>
+                    </div>
+                    <button class="next-btn" onclick="nextStep(3)" disabled id="step2Next">下一步：選擇性別</button>
+                </div>
+               
+                <!-- 步驟3：性別選擇 -->
+                <div id="step3" class="step-content">
+                    <div class="step-header">
+                        <div class="step-title">步驟 3/5：選擇性別</div>
+                        <div class="step-info">選擇商品的目標性別</div>
+                    </div>
+                    <button class="back-btn" onclick="prevStep(2)">← 上一步</button>
+                    
+                    <!-- 快速切換已記住的性別 -->
+                    <div id="savedGenderOptions" style="display: none; margin-bottom: 15px;">
+                        <div style="font-size: 14px; color: #666; margin-bottom: 8px;">快速選擇：</div>
+                        <div class="options-grid" id="savedGenderGrid">
+                            <!-- 動態載入已記住的性別選項 -->
+                        </div>
+                    </div>
+                    
+                    <div class="options-grid">
+    <div class="option-btn" onclick="selectOption(this, 'gender', '男')">男</div>
+    <div class="option-btn" onclick="selectOption(this, 'gender', '女')">女</div>
+    <div class="option-btn" onclick="selectOption(this, 'gender', '青年')">青年</div>
+    <div class="option-btn" onclick="selectOption(this, 'gender', '不分')">不分</div>
+    <div class="option-btn" onclick="selectOption(this, 'gender', '成人')">成人</div>
+    <div class="option-btn" onclick="selectOption(this, 'gender', '兒童')">兒童</div>
+    <div class="option-btn" onclick="selectOption(this, 'gender', '50+')">50+</div>    
+</div>
+                    <div style="margin: 15px 0;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                            <input type="checkbox" id="rememberGender">
+                            記住此性別選擇（加入快速選項）
+                        </label>
+                    </div>
+                    <button class="next-btn" onclick="nextStep(4)" disabled id="step3Next">下一步：選擇類別</button>
+                </div>
+               
+                <!-- 步驟4：類別選擇 -->
+<div id="step4" class="step-content">
+    <div class="step-header">
+        <div class="step-title">步驟 4/5：選擇類別</div>
+        <div class="step-info">選擇商品類別</div>
+    </div>
+    <button class="back-btn" onclick="prevStep(3)">← 上一步</button>
+    <div class="category-groups">
+        <!-- 空的容器，動態載入的類別會在這裡顯示 -->
+    </div>
+    <button class="next-btn" onclick="nextStep(5)" disabled id="step4Next">下一步：選擇特色</button>
+</div>
+                
+
+                <!-- 步驟5：特色選擇 -->
+                <div id="step5" class="step-content">
+                    <div class="step-header">
+                        <div class="step-title">步驟 5/5：選擇特色</div>
+                        <div class="step-info">選擇商品特色（可多選，如無特色可直接搜尋）</div>
+                    </div>
+                    <button class="back-btn" onclick="prevStep(4)">← 上一步</button>
+                    <div id="featuresContainer">
+                        <!-- 特色選項將根據品牌動態載入 -->
+                    </div>
+                    <button class="next-btn" onclick="searchProducts()">🔍 開始搜尋</button>
+                </div>
+            </div>
+           
+            <!-- 語音搜尋介面 -->
+<div id="voiceSearch" class="step-container">
+    <div class="step-header">
+        <div class="step-title">🎤 語音搜尋</div>
+        <div class="step-info">使用iOS鍵盤語音輸入功能</div>
+    </div>
+    <button class="back-btn" onclick="backToMenu()">← 返回主選單</button>
+    
+    <div class="voice-interface">
+        <div style="margin: 20px 0; text-align: center;">
+            <div style="margin-bottom: 15px; font-size: 14px; color: #666;">
+                1. 點擊下方文字框<br>
+                2. 按iOS鍵盤上的🎤圖示<br>
+                3. 說出商品特徵
+            </div>
+            
+            <!-- 改成這樣 -->
+<input type="text" 
+       id="voiceTextInput" 
+       placeholder="點這裡，然後按鍵盤麥克風說話" 
+       style="width: 100%; padding: 15px; font-size: 16px; border: 2px solid #3498db; border-radius: 8px; margin-bottom: 20px; box-sizing: border-box;">
+
+<button onclick="processVoiceText()" 
+        style="width: 100%; padding: 12px 20px; background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; box-sizing: border-box;">
+                🔍 開始搜尋
+            </button>
+        </div>
+        
+        <div id="voiceResult" class="voice-result" style="display: none;"></div>
+    </div>
+</div>
+           
+            <!-- AI搜尋介面 -->
+            <div id="aiSearch" class="step-container">
+                <div class="step-header">
+                    <div class="step-title">🤖 AI智慧搜尋</div>
+                    <div class="step-info">使用AI理解複雜查詢意圖</div>
+                </div>
+                <button class="back-btn" onclick="backToMenu()">← 返回主選單</button>
+                <div class="ai-interface">
+                    <div class="ai-status">⚠️ 此功能需要ChatGPT API，按次計費</div>
+                    <textarea class="ai-input" placeholder="請描述你要找的商品，例如：&#10;&#10;「我要找哥倫比亞的女生防曬短袖，要有冰點技術的」&#10;&#10;「找一件適合登山的男性外套，要防水透氣」"></textarea>
+                    <button class="next-btn" onclick="aiSearch()">🤖 AI搜尋</button>
+                </div>
+            </div>
+           
+            <!-- 搜尋結果 -->
+            <div id="searchResults" class="results-container">
+                <div class="results-header">
+                    <div class="step-title">🎯 搜尋結果</div>
+                    <div class="step-info">找到以下相符的商品</div>
+                </div>
+                <button class="back-btn" onclick="backToMenu()">← 返回主選單</button>
+                <div id="resultsList">
+                    <!-- 搜尋結果將動態載入 -->
+                </div>
+            </div>
+           
+            <!-- 載入中 -->
+            <div id="loading" class="loading">
+                <div class="loading-spinner"></div>
+                <div>搜尋中...</div>
+            </div>
+        </div>
+    </div>
+
+<!-- JavaScript 連結 --> 
+<script src="js/data.js"></script> 
+<script src="js/search.js"></script>
+ <script src="js/app.js"></script>
+ <button id="fixedNextBtn" class="fixed-next-btn">下一步</button>
+
+ </body>
+ </html>
