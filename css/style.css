@@ -507,11 +507,13 @@
     text-align: center;
     background: white;
     min-height: 100%;
-    position: absolute;
+    position: fixed;          /* 改成 fixed */
     width: 100%;
+    height: 100vh;           /* 加這行 */
     top: 0;
     left: 0;
     z-index: 1000;
+    overflow-y: auto;        /* 加這行，內容太長時可滾動 */
 }
 
 .login-header {
@@ -540,9 +542,9 @@
 .login-form {
     max-width: 340px;
     margin: 0 auto;
-    width: 100%;           /* 加這行 */
-    padding: 0 10px;       /* 加這行，給左右留點空間 */
-    box-sizing: border-box; /* 加這行 */
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 .form-group {
