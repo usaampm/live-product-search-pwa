@@ -501,61 +501,88 @@
 }
 
 /* 登入頁面樣式 */
+/* 新的響應式登入頁面樣式 - 直接替換原本的登入相關CSS */
+
+/* 1. 替換 .login-container */
 .login-container {
-    display: block;
-    padding: 40px 20px;
-    text-align: center;
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* header / main / actions */
+    /* 動態視窗高度，漸進式回退 */
+    min-height: 100vh;                /* 最後備援 */
+    min-height: 100svh;               /* iOS 安全小視窗高 */
+    min-height: 100dvh;               /* 跟著工具列/鍵盤動態改變 */
+    padding: max(16px, env(safe-area-inset-top)) 
+             20px 
+             max(16px, env(safe-area-inset-bottom)) 
+             20px;
     background: white;
-    min-height: 100%;
+    box-sizing: border-box;
+    overflow: hidden; /* 預設不允許捲動 */
+    text-align: center;
 }
 
+/* 2. 替換 .login-header */
 .login-header {
-    margin-bottom: 40px;
+    margin-bottom: clamp(12px, 4vh, 28px);
 }
 
+/* 3. 替換 .login-icon */
 .login-icon {
-    width: 80px;
-    height: 80px;
+    width: clamp(56px, 10vh, 80px);
+    height: clamp(56px, 10vh, 80px);
     border-radius: 18px;
-    margin: 0 auto 20px auto;
+    margin: 0 auto clamp(12px, 2.5vh, 20px) auto;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
+/* 4. 替換 .login-header h2 */
 .login-header h2 {
-    font-size: 24px;
+    font-size: clamp(18px, 2.6vh, 24px);
     color: #2c3e50;
-    margin-bottom: 8px;
+    margin-bottom: clamp(4px, 1vh, 8px);
 }
 
+/* 5. 保持 .login-header p */
 .login-header p {
     color: #7f8c8d;
-    font-size: 14px;
+    font-size: clamp(12px, 1.8vh, 14px);
 }
 
+/* 6. 替換 .login-form */
 .login-form {
+    display: grid;
+    gap: clamp(10px, 2vh, 16px);
+    align-content: start;
+    min-height: 0;      /* 關鍵：允許收縮避免溢出 */
+    overflow: auto;     /* 只有在高度不足時才會出現微滾 */
+    -webkit-overflow-scrolling: touch;
+    text-align: left;
     max-width: 340px;
     margin: 0 auto;
 }
 
+/* 7. 替換 .form-group */
 .form-group {
-    margin-bottom: 20px;
+    margin: 0; /* 改為0，間距由 .login-form 的 gap 控制 */
     text-align: left;
 }
 
+/* 8. 保持 .form-group label */
 .form-group label {
     display: block;
     margin-bottom: 8px;
-    font-size: 14px;
+    font-size: clamp(13px, 1.8vh, 14px);
     color: #2c3e50;
     font-weight: 600;
 }
 
+/* 9. 保持 .form-group input */
 .form-group input {
     width: 100%;
     padding: 15px;
     border: 2px solid #dee2e6;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: clamp(14px, 2vh, 16px);
     box-sizing: border-box;
 }
 
@@ -564,14 +591,21 @@
     outline: none;
 }
 
+/* 10. 新增：登入按鈕區域（如果原本沒有包裝div，需要在HTML加上） */
+.login-actions {
+    padding-top: clamp(8px, 2vh, 16px);
+}
+
+/* 11. 替換 .login-btn */
 .login-btn {
     width: 100%;
-    padding: 18px;
+    max-width: 340px;
+    height: clamp(40px, 6.5vh, 52px);
     background: linear-gradient(135deg, #3498db, #2980b9);
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: clamp(15px, 2.2vh, 16px);
     font-weight: 600;
     cursor: pointer;
     margin-top: 10px;
@@ -583,6 +617,40 @@
     box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
+/* 12. 針對超矮螢幕的額外調整 */
+@media (max-height: 640px) {
+    .login-header { 
+        margin-bottom: 12px; 
+    }
+    .login-icon { 
+        border-radius: 14px; 
+    }
+    .login-actions { 
+        padding-top: 8px; 
+    }
+}
+
+/* 13. 防止iOS橡皮筋滾動（可選，加在最外層） */
+html, body { 
+    height: 100%; 
+    overscroll-behavior: none; 
+}
+
+/* 14. 記住登入狀態的 checkbox 樣式調整 */
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: clamp(13px, 1.8vh, 14px);
+    color: #2c3e50;
+    text-align: left;
+    margin: 0;
+}
+
+.remember input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
 
 
 
