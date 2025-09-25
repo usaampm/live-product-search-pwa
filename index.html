@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>直播商品查找系統</title>
    <link rel="stylesheet" href="css/style.css">
-   <link rel="manifest" href="manifest.json">
+   <link rel="manifest" href="/live-product-search-pwa/manifest.json">
+   <meta name="apple-mobile-web-app-capable" content="yes">
+   <meta name="apple-mobile-web-app-title" content="商品查找">
+   <meta name="apple-mobile-web-app-status-bar-style" content="default">
+   <link rel="apple-touch-icon" href="/live-product-search-pwa/apple-touch-icon.png">
    <meta name="theme-color" content="#2c3e50">
 
 
@@ -262,7 +266,11 @@
 
 <script>
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
+  navigator.serviceWorker.register('/live-product-search-pwa/sw.js', {
+    scope: '/live-product-search-pwa/'
+  }).then(reg => {
+    console.log('SW registered', reg.scope);
+  }).catch(err => console.error('SW fail', err));
 }
 </script>
 
