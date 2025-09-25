@@ -92,7 +92,7 @@ function clearLocalCache() {
 
 
 function hideAllContainers() {
-    const containers = ['mainMenu', 'stepSearch', 'voiceSearch', 'aiSearch', 'searchResults', 'loading'];
+    const containers = ['loginScreen', 'mainMenu', 'stepSearch', 'voiceSearch', 'aiSearch', 'searchResults', 'loading'];
     containers.forEach(id => {
         const element = document.getElementById(id);
         if (element) {
@@ -397,6 +397,67 @@ function processVoiceText() {
     }
 }
 
+async function handleLogin() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    
+    if (!email || !password) {
+        alert('請輸入完整的登入資訊');
+        return;
+    }
+    
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ action: 'login', email: email, password: password })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('loginTime', Date.now().toString());
+            localStorage.setItem('userRole', result.role);
+            showMainApp();
+        } else {
+            alert(result.message);
+        }
+    } catch (err) {
+        alert('連線錯誤：' + err.message);
+    }
+}
+
+function showMainApp() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainMenu').style.display = 'block';
+    checkLoginStatus(); // 加上這行
+}
+
+function checkLoginStatus() {
+    const loginStatus = localStorage.getItem('userLoggedIn');
+    const loginTime = localStorage.getItem('loginTime');
+    
+    if (loginStatus && loginTime) {
+        const now = Date.now();
+        const loginExpiry = parseInt(loginTime) + (7 * 24 * 60 * 60 * 1000); // 7天
+        
+        if (now < loginExpiry) {
+            showMainApp();
+            return;
+        }
+    }
+    
+    showLoginScreen();
+}
+
+function showLoginScreen() {
+    document.getElementById('loginScreen').style.display = 'block';
+    document.getElementById('mainMenu').style.display = 'none';
+}
 
 
+document.addEventListener('DOMContentLoaded', function() {
+    checkLoginStatus();
+});
 
