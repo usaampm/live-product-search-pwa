@@ -2,14 +2,14 @@
   "name": "直播商品查找系統",
   "short_name": "商品查找",
   "description": "快速查找直播商品，精準匹配需求",
-  "start_url": "/",
+  "start_url": "/live-product-search-pwa/",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#2c3e50",
   "background_color": "#ffffff",
   "categories": ["productivity", "business"],
   "lang": "zh-TW",
-  "scope": "/",
+  "scope": "/live-product-search-pwa/",
   "icons": [
     {
       "src": "icon-192.png",
