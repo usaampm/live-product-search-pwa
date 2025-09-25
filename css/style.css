@@ -540,6 +540,9 @@
 .login-form {
     max-width: 340px;
     margin: 0 auto;
+    width: 100%;           /* 加這行 */
+    padding: 0 10px;       /* 加這行，給左右留點空間 */
+    box-sizing: border-box; /* 加這行 */
 }
 
 .form-group {
@@ -562,6 +565,7 @@
     border-radius: 8px;
     font-size: 16px;
     box-sizing: border-box;
+    max-width: 100%;       /* 加這行 */
 }
 
 .form-group input:focus {
@@ -581,6 +585,8 @@
     cursor: pointer;
     margin-top: 10px;
     transition: all 0.3s ease;
+    max-width: 100%;       /* 加這行 */
+    box-sizing: border-box; /* 加這行 */
 }
 
 .login-btn:hover {
