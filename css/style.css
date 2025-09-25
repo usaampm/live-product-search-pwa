@@ -502,34 +502,29 @@
 
 /* 登入頁面樣式 */
 .login-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;    /* 垂直置中 */
-    align-items: center;
-    padding: 20px 15px;        /* 縮小間距 */
+    display: block;
+    padding: 40px 20px;
     text-align: center;
     background: white;
-    height: 100vh;             /* 固定滿版高度 */
-    overflow: hidden;          /* 禁止滾動 */
-    position: fixed;           /* 固定定位 */
-    width: 100%;
-    top: 0;
-    left: 0;
+    min-height: 100%;
 }
 
 .login-header {
-    margin-bottom: 20px;       /* 縮小間距 */
+    margin-bottom: 40px;
 }
 
 .login-icon {
-    width: 60px;               /* 縮小 logo */
-    height: 60px;
-    margin-bottom: 15px;       /* 縮小間距 */
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
+    margin: 0 auto 20px auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .login-header h2 {
-    font-size: 20px;           /* 縮小標題 */
-    margin-bottom: 5px;
+    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 8px;
 }
 
 .login-header p {
@@ -543,7 +538,8 @@
 }
 
 .form-group {
-    margin-bottom: 15px;       /* 縮小表單間距 */
+    margin-bottom: 20px;
+    text-align: left;
 }
 
 .form-group label {
