@@ -584,7 +584,7 @@ html, body {
     padding: 15px;
     border: 2px solid #dee2e6;
     border-radius: 8px;
-    font-size: clamp(14px, 2vh, 16px);
+     font-size: 16px;  /* 改這行，直接固定16px */
     box-sizing: border-box;
 }
 
