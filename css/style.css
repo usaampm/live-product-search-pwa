@@ -507,11 +507,6 @@
     text-align: center;
     background: white;
     min-height: 100%;
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1000;
 }
 
 .login-header {
@@ -588,19 +583,6 @@
     box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
-.checkbox-group {
-    margin: 20px 0;
-    text-align: left;
-}
-
-.checkbox-group label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: #666;
-    cursor: pointer;
-}
 
 
 
