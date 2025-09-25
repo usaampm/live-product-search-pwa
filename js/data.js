@@ -4,7 +4,7 @@
 
 // 🔑 後端 API URL（Worker 或 GAS 二選一）
 const API_URL = "https://pwa-cors-proxy.usaampmintw.workers.dev";
-// const API_URL = "https://script.google.com/macros/s/AKfycbysBRwATdQlfcBd7_bov0djcZKn6P1eNxLoh2jyevvV-Nb_v93Oz7lpS_Yx-ufwofFrrw/exec"; // 備用
+// const API_URL = "https://script.google.com/macros/s/AKfycbxtbpn12nR40qiHcZUdhMC_2zaoTjvJFfTh-BAfVtY8T1VD9sK1KnjWbmUnKeehQ9I33Q/exec"; // 備用
 
 
 // 全域變數
