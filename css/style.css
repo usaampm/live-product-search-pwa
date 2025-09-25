@@ -39,15 +39,16 @@ html, body {
 }
        
         .header {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            color: white;
-            padding: 20px 15px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            height: 64px;  /* 新增這行：固定高度 */
-        }
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: white;
+    padding: max(20px, env(safe-area-inset-top)) 15px 20px 15px; /* 加上安全區域 */
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: auto; /* 改成auto，讓它自動調整 */
+    min-height: 64px; /* 設最小高度 */
+}
        
         .header h1 {
             font-size: 20px;
@@ -513,16 +514,12 @@ html, body {
 
 .login-container {
     display: grid;
-    grid-template-rows: auto 1fr auto; /* header / main / actions */
-    /* 動態視窗高度，漸進式回退 */
-    min-height: calc(100dvh - 64px);  /* 64px是header高度 */
-    padding: max(16px, env(safe-area-inset-top)) 
-             20px 
-             max(16px, env(safe-area-inset-bottom)) 
-             20px;
+    grid-template-rows: auto 1fr auto;
+    min-height: calc(100dvh - env(safe-area-inset-top) - 84px); /* 考慮安全區域+header */
+    padding: 20px 20px max(16px, env(safe-area-inset-bottom)) 20px;
     background: white;
     box-sizing: border-box;
-    overflow: hidden; /* 預設不允許捲動 */
+    overflow: hidden;
     text-align: center;
 }
 
