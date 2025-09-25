@@ -507,6 +507,11 @@
     text-align: center;
     background: white;
     min-height: 100%;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 .login-header {
