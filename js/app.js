@@ -431,7 +431,7 @@ async function handleLogin() {
 function showMainApp() {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('mainMenu').style.display = 'block';
-    checkLoginStatus(); // 加上這行
+    // 刪除這行：checkLoginStatus();
 }
 
 function checkLoginStatus() {
