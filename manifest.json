@@ -3,7 +3,7 @@
   "short_name": "商品查找",
   "description": "快速查找直播商品，精準匹配需求",
   "start_url": "/live-product-search-pwa/",
-  "display": "standalone",
+  "display": "minimal-ui",
   "orientation": "portrait",
   "theme_color": "#2c3e50",
   "background_color": "#ffffff",
