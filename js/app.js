@@ -62,7 +62,7 @@ function startVoiceSearch() {
 // 在 app.js 中替換 startAISearch 函數
 function showManual() {
     // 使用最新的Google Apps Script網址
-    const manualUrl = 'https://script.google.com/macros/s/AKfycby8p5Vbmx032Slcl0flIZ_XVhnZuaRN3SMa5Cn1GTI8A37LWbywh5joqU7ee2iCCXZgAw/exec?action=manual';
+    const manualUrl = 'https://script.google.com/macros/s/AKfycbxtbpn12nR40qiHcZUdhMC_2zaoTjvJFfTh-BAfVtY8T1VD9sK1KnjWbmUnKeehQ9I33Q/exec?action=manual';
     window.open(manualUrl, '_blank');
 }
 
