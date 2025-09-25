@@ -1,4 +1,11 @@
 <style>
+
+
+html, body { 
+    margin: 0; 
+    overflow: hidden; 
+}
+
         * {
             margin: 0;
             padding: 0;
@@ -39,6 +46,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            height: 64px;  /* 新增這行：固定高度 */
         }
        
         .header h1 {
@@ -507,9 +515,7 @@
     display: grid;
     grid-template-rows: auto 1fr auto; /* header / main / actions */
     /* 動態視窗高度，漸進式回退 */
-    min-height: 100vh;                /* 最後備援 */
-    min-height: 100svh;               /* iOS 安全小視窗高 */
-    min-height: 100dvh;               /* 跟著工具列/鍵盤動態改變 */
+    min-height: calc(100dvh - 64px);  /* 64px是header高度 */
     padding: max(16px, env(safe-area-inset-top)) 
              20px 
              max(16px, env(safe-area-inset-bottom)) 
